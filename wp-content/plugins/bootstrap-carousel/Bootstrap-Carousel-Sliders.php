@@ -31,3 +31,7 @@ array(
 /*
 tif_get_template('inc/gelest-slider.php')
 */
+
+
+
+
