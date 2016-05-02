@@ -54,6 +54,8 @@ if (!current_user_can('manage_options'))  {
 				'taxonomies' => get_object_taxonomies($slug, 'objects')
 			);
 	}
+	/*
+	// Uncomment me to retrieve all options and values associated with them!
 	echo '<h2>bs_posttypes</h2><pre>', var_dump($selected_posttypes), '</pre>';
 	echo '<h2>bs_archives</h2><pre>', var_dump($selected_archives), '</pre>';
 	echo '<h2>bs_pages_all</h2><pre>', var_dump($selected_pages_all), '</pre>';
@@ -62,6 +64,7 @@ if (!current_user_can('manage_options'))  {
 	echo '<h2>bs_taxonomies</h2><pre>', var_dump($selected_taxonomies), '</pre>';
 	echo '<h2>bs_featured_image</h2><pre>', var_dump($selected_featured_image), '</pre>';
 	echo '<h2>bs_acf_field_slug</h2><pre>', var_dump(get_option('bs_acf_field_slug', '')), '</pre>';
+	*/
 ?>
 
 	<table class="form-table">
@@ -72,7 +75,7 @@ if (!current_user_can('manage_options'))  {
 		    	$i = 0;
 		    	foreach($posttypes as $slug => $post_type): ?>
 		    	<p>
-			    	<input id="bs_posttypes<?php echo $i; ?>" type="checkbox" name="bs_posttypes[]" value="<?php echo $slug; ?>" <?php checked(in_array($slug, $selected_posttypes), 1, true); ?>/>
+			    	<input id="bs_posttypes<?php echo $i; ?>" type="checkbox" name="bs_posttypes[]" value="<?php echo $slug; ?>" <?php (!empty($selected_posttypes) ? checked(in_array($slug, $selected_posttypes), 1, true) : ''); ?>/>
 			    	<label for="bs_posttypes<?php echo $i; ?>"><?php echo $post_type->labels->name; ?></label>
 			    </p>
 				<?php $i++; endforeach; ?>
@@ -117,14 +120,14 @@ if (!current_user_can('manage_options'))  {
 				    	<input id="bs_taxonomies_all<?php echo $i; ?>" type="checkbox" name="bs_taxonomies_all[]" value="<?php echo $post_slug; ?>" <?php checked(in_array($post_slug, $selected_taxonomies_all), 1, true); ?>/>
 				    	<label for="bs_taxonomies_all<?php echo $i; ?>"><strong>All Taxonomies</strong></label>
 				    </p>
-				    <?php 
+				    <?php if (!empty($taxonomy_post_type['taxonomies'])):
 				    	$k = 0;
 				    	foreach($taxonomy_post_type['taxonomies'] as $tax_slug => $taxonomy): ?>
 				    	<p>
-					    	<input id="bs_taxonomies<?php echo $i . '_' . $k; ?>" type="checkbox" name="bs_taxonomies[<?php echo $post_slug; ?>][]" value="<?php echo $tax_slug; ?>" <?php checked(in_array($tax_slug, $selected_taxonomies[$post_slug]), 1, true); ?>/>
+					    	<input id="bs_taxonomies<?php echo $i . '_' . $k; ?>" type="checkbox" name="bs_taxonomies[<?php echo $post_slug; ?>][]" value="<?php echo $tax_slug; ?>" <?php (!empty($selected_taxonomies[$post_slug]) ? checked(in_array($tax_slug, $selected_taxonomies[$post_slug]), 1, true) : ''); ?>/>
 					    	<label for="bs_pages<?php echo $i . '_' . $k; ?>"><?php echo $taxonomy->labels->name; ?></label>
 				    	</p>
-				    <?php $k++; endforeach; ?>
+				    <?php $k++; endforeach; endif; ?>
 
 				<?php $i++; endforeach; ?>
 	    	</td>
